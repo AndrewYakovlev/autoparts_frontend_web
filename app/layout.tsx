@@ -1,22 +1,31 @@
-// src/app/layout.tsx
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { Providers } from "@/components/providers";
-
-const inter = Inter({ subsets: ["latin", "cyrillic"] });
+// app/layout.tsx
+import type { Metadata } from 'next'
+import { GeistSans } from 'geist/font/sans'
+import { AuthProvider } from '@/contexts/AuthContext'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { Toaster } from 'sonner'
+import './globals.css'
 
 export const metadata: Metadata = {
-  title: "AutoParts - Интернет-магазин автозапчастей",
-  description: "Широкий ассортимент автозапчастей с доставкой по всей России",
-};
+	title: 'AutoParts - Интернет-магазин автозапчастей',
+	description: 'Широкий выбор автозапчастей с быстрой доставкой',
+}
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="ru">
-      <body className={inter.className}>
-        <Providers>{children}</Providers>
-      </body>
-    </html>
-  );
+export default function RootLayout({
+	children,
+}: Readonly<{
+	children: React.ReactNode
+}>) {
+	return (
+		<html lang="ru">
+			<body className={`${GeistSans.className} antialiased`}>
+				<ErrorBoundary>
+					<AuthProvider>
+						{children}
+						<Toaster richColors position="top-center" />
+					</AuthProvider>
+				</ErrorBoundary>
+			</body>
+		</html>
+	)
 }
